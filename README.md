@@ -1,4 +1,4 @@
 libHammer
 =========
 
-C# library containing useful items to make life easier.
+Open-source C# library containing code to make life easier.
