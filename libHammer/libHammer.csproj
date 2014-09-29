@@ -40,9 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assertions\AssertionContracts.cs" />
     <Compile Include="Extension Methods\ExceptionExtensions.cs" />
     <Compile Include="Extension Methods\HttpSessionStateExtensions.cs" />
     <Compile Include="Extension Methods\ListExtensions.cs" />
+    <Compile Include="Extension Methods\ObjectExtensions.cs" />
     <Compile Include="Extension Methods\StringExtensions.cs" />
     <Compile Include="Extension Methods\UrlHelperExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
