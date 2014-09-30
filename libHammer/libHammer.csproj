@@ -45,6 +45,7 @@
     <Compile Include="Design Patterns\DesignPatternException.cs" />
     <Compile Include="Design Patterns\ISupportLazyInitialization.cs" />
     <Compile Include="Design Patterns\Singleton.cs" />
+    <Compile Include="Extension Methods\ConsoleExtensions.cs" />
     <Compile Include="Extension Methods\ExceptionExtensions.cs" />
     <Compile Include="Extension Methods\HttpSessionStateExtensions.cs" />
     <Compile Include="Extension Methods\ListExtensions.cs" />
