@@ -25,6 +25,18 @@ namespace libHammer
 
         //    return newList;
         //}
+
+        /// <summary>
+        /// Converts a list of objects to a Comma Separated String (CSV).
+        /// NOTE: Care my be taken when using objects! The results may not be 100% correct.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static string ToCsv<T>(this List<T> list)
+        {
+            return string.Join(",", list);
+        }
         
     }
 }

@@ -45,13 +45,21 @@
     <Compile Include="Design Patterns\DesignPatternException.cs" />
     <Compile Include="Design Patterns\ISupportLazyInitialization.cs" />
     <Compile Include="Design Patterns\Singleton.cs" />
+    <Compile Include="FluentEmail\EmbeddedResourceHelper.cs" />
+    <Compile Include="FluentEmail\FluentEmail.cs" />
     <Compile Include="Extension Methods\ExceptionExtensions.cs" />
     <Compile Include="Extension Methods\HttpSessionStateExtensions.cs" />
     <Compile Include="Extension Methods\ListExtensions.cs" />
     <Compile Include="Extension Methods\ObjectExtensions.cs" />
+    <Compile Include="Extension Methods\RandomExtensions.cs" />
     <Compile Include="Extension Methods\StringEntensions.cs" />
     <Compile Include="Extension Methods\UrlHelperExtensions.cs" />
+    <Compile Include="FluentEmail\IFluentTemplateRenderer.cs" />
+    <Compile Include="FluentEmail\RazorRenderer.cs" />
     <Compile Include="Helper Methods\ConsoleHelper.cs" />
+    <Compile Include="HtmlHelper Methods\Google.cs" />
+    <Compile Include="HtmlHelper Methods\Yahoo.cs" />
+    <Compile Include="Profiling\MethodTiming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
