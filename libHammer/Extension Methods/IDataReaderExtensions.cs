@@ -61,24 +61,29 @@ namespace libHammer.Extension_Methods
 
                     for (int i = 0; i < dataReader.FieldCount - 1; i++)
                     {
-                        if (!dataReader.IsDBNull(index))
+                        if (!dataReader.IsDBNull(i))
                         {
-                            string value = dataReader.GetValue(index).ToString();
-                            if (dataReader.GetFieldType(index) == typeof(String))
+                            string value = dataReader.GetValue(i).ToString();
+                            if (dataReader.GetFieldType(i) == typeof(String))
                             {
-                                //If double quotes are used in value, ensure each are replaced but 2.
+                                /* If double quotes are used in value, ensure each are replaced but 2. */
                                 if (value.IndexOf("\"") >= 0)
+                                {
                                     value = value.Replace("\"", "\"\"");
+                                }
 
-                                //If separtor are is in value, ensure it is put in double quotes.
+                                /* If separtor are is in value, ensure it is put in double quotes. */
                                 if (value.IndexOf(separator) >= 0)
+                                {
                                     value = "\"" + value + "\"";
+                                }
+                                    
                             }
-                            sb.Append(value);
+                            stringBuilder.Append(value);
                         }
 
-                        if (index < dataReader.FieldCount - 1)
-                            sb.Append(separator);
+                        if (i < dataReader.FieldCount - 1)
+                            stringBuilder.Append(separator);
                     }
 
                     if (!dataReader.IsDBNull(dataReader.FieldCount - 1))

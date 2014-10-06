@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -41,9 +42,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assertions\AssertionContracts.cs" />
+    <Compile Include="Collections\Map.cs" />
     <Compile Include="Design Patterns\BuilderAttribute.cs" />
     <Compile Include="Design Patterns\DesignPatternException.cs" />
+    <Compile Include="Design Patterns\Factory.cs" />
+    <Compile Include="Design Patterns\FactorySettings.cs" />
     <Compile Include="Design Patterns\ISupportLazyInitialization.cs" />
+    <Compile Include="Design Patterns\SharedInstance.cs" />
     <Compile Include="Design Patterns\Singleton.cs" />
     <Compile Include="Extension Methods\AssemblyExtensions.cs" />
     <Compile Include="Extension Methods\IDataReaderExtensions.cs" />
@@ -65,6 +70,13 @@
     <Compile Include="HtmlHelper Methods\Yahoo.cs" />
     <Compile Include="Profiling\MethodTiming.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime Environment\RuntimeEnvironment.cs" />
+    <Compile Include="Sql\Database.cs" />
+    <Compile Include="Sql\IDatabase.cs" />
+    <Compile Include="Xml\ConfigurationManager.cs" />
+    <Compile Include="Xml\ConfigurationSectionBase.cs" />
+    <Compile Include="Xml\ExternalConfigurationBase.cs" />
+    <Compile Include="Xml\InvalidConfigurationException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

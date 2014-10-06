@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libHammer", "libHammer\libH
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{0D6B32B2-035C-4D11-BB79-E9E633B4ED4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libHammer.UI", "libHammer.UI\libHammer.UI.csproj", "{66E28F5B-9E67-4A76-80AD-6F8ADA71FACA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0D6B32B2-035C-4D11-BB79-E9E633B4ED4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D6B32B2-035C-4D11-BB79-E9E633B4ED4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D6B32B2-035C-4D11-BB79-E9E633B4ED4D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66E28F5B-9E67-4A76-80AD-6F8ADA71FACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66E28F5B-9E67-4A76-80AD-6F8ADA71FACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66E28F5B-9E67-4A76-80AD-6F8ADA71FACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66E28F5B-9E67-4A76-80AD-6F8ADA71FACA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
