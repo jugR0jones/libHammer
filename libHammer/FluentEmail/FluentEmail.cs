@@ -1,12 +1,17 @@
-﻿using System;
+﻿using libHammer.FluentEmail;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net.Mail;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace libHammer
+namespace libHammer.FluentEmail
 {
 
     /// <summary>
@@ -19,7 +24,7 @@ namespace libHammer
         private SmtpClient _smtpClient;
         private bool _usingSsl;
         private bool _bodyIsHtml = true;
-        private IFluentEmailTemplateRenderer _templateRenderer;
+        private IFluentTemplateRenderer _templateRenderer;
 
         public MailMessage Message { get; private set; }
 
@@ -49,7 +54,7 @@ namespace libHammer
         /// </summary>
         /// <param name="smtpClient"></param>
         /// <param name="templateRenderer"></param>
-        public FluentEmail(SmtpClient smtpClient, IFluentEmailTemplateRenderer templateRenderer)
+        public FluentEmail(SmtpClient smtpClient, IFluentTemplateRenderer templateRenderer)
         {
             this._smtpClient = smtpClient;
             this._templateRenderer = templateRenderer;
@@ -79,11 +84,15 @@ namespace libHammer
         #region IDisposable Methods
 
         /// <summary>
-        /// 
+        /// Releases all resources
         /// </summary>
         public void Dispose()
         {
-            throw new NotImplementedException();
+            if (this._smtpClient != null)
+                this._smtpClient.Dispose();
+
+            if (Message != null)
+                Message.Dispose();
         }
 
         #endregion
@@ -96,7 +105,7 @@ namespace libHammer
         /// <param name="defaultRenderer">The template rendering engine</param>
         /// <param name="emailAddress">Email address to send from</param>
         /// <param name="name">Name to send from</param>
-        public Email(ITemplateRenderer defaultRenderer, string emailAddress, string name = "") : this(new SmtpClient(), defaultRenderer, emailAddress, name) { }
+        public FluentEmail(IFluentTemplateRenderer defaultRenderer, string emailAddress, string name = "") : this(new SmtpClient(), defaultRenderer, emailAddress, name) { }
 
         /// <summary>
         /// Creates a new Email instance and sets the from property with overrides the default client from .config and filetemplate rendering: RazorEngine.
@@ -105,43 +114,10 @@ namespace libHammer
         /// <param name="defaultRenderer">The template rendering engine</param>
         /// <param name="emailAddress">Email address to send from</param>
         /// <param name="name">Name to send from</param>
-        public Email(SmtpClient client, ITemplateRenderer defaultRenderer, string emailAddress, string name = "")
+        public FluentEmail(SmtpClient client, IFluentTemplateRenderer defaultRenderer, string emailAddress, string name = "")
             : this(client, defaultRenderer)
         {
             Message.From = new MailAddress(emailAddress, name);
-        }
-
-        /// <summary>
-        /// Creates a new email instance using the default from
-        /// address from smtp config settings
-        /// </summary>
-        /// <returns>Instance of the Email class</returns>
-        [Obsolete("FluentEmail.Email.FromDefault() is obsolete: 'Please use the constructor'")]
-        public static IFluentEmail FromDefault()
-        {
-            var email = new Email
-            {
-                Message = new MailMessage()
-            };
-
-            return email;
-        }
-
-        /// <summary>
-        /// Creates a new Email instance and sets the from
-        /// property
-        /// </summary>
-        /// <param name="emailAddress">Email address to send from</param>
-        /// <param name="name">Name to send from</param>
-        /// <returns>Instance of the Email class</returns>
-        [Obsolete("FluentEmail.Email.From(string emailAddress, string name) is obsolete: 'Please use the constructor'")]
-        public static IFluentEmail From(string emailAddress, string name = "")
-        {
-            var email = new Email
-            {
-                Message = { From = new MailAddress(emailAddress, name) }
-            };
-            return email;
         }
 
         /// <summary>
@@ -150,7 +126,7 @@ namespace libHammer
         /// <param name="emailAddress">Email address of recipeient</param>
         /// <param name="name">Name of recipient</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail To(string emailAddress, string name)
+        public FluentEmail To(string emailAddress, string name)
         {
             if (emailAddress.Contains(";"))
             {
@@ -179,7 +155,7 @@ namespace libHammer
         /// </summary>
         /// <param name="emailAddress">Email address of recipeient (allows multiple splitting on ';')</param>
         /// <returns></returns>
-        public IFluentEmail To(string emailAddress)
+        public FluentEmail To(string emailAddress)
         {
             if (emailAddress.Contains(";"))
             {
@@ -201,7 +177,7 @@ namespace libHammer
         /// </summary>
         /// <param name="mailAddresses">List of recipients</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail To(IList<MailAddress> mailAddresses)
+        public FluentEmail To(IList<MailAddress> mailAddresses)
         {
             foreach (var address in mailAddresses)
             {
@@ -216,7 +192,7 @@ namespace libHammer
         /// <param name="emailAddress">Email address to cc</param>
         /// <param name="name">Name to cc</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail CC(string emailAddress, string name = "")
+        public FluentEmail CC(string emailAddress, string name = "")
         {
             Message.CC.Add(new MailAddress(emailAddress, name));
             return this;
@@ -227,7 +203,7 @@ namespace libHammer
         /// </summary>
         /// <param name="mailAddresses">List of recipients to CC</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail CC(IList<MailAddress> mailAddresses)
+        public FluentEmail CC(IList<MailAddress> mailAddresses)
         {
             foreach (var address in mailAddresses)
             {
@@ -242,7 +218,7 @@ namespace libHammer
         /// <param name="emailAddress">Email address of bcc</param>
         /// <param name="name">Name of bcc</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail BCC(string emailAddress, string name = "")
+        public FluentEmail BCC(string emailAddress, string name = "")
         {
             Message.Bcc.Add(new MailAddress(emailAddress, name));
             return this;
@@ -253,7 +229,7 @@ namespace libHammer
         /// </summary>
         /// <param name="mailAddresses">List of recipients to BCC</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail BCC(IList<MailAddress> mailAddresses)
+        public FluentEmail BCC(IList<MailAddress> mailAddresses)
         {
             foreach (var address in mailAddresses)
             {
@@ -267,7 +243,7 @@ namespace libHammer
         /// </summary>
         /// <param name="address">The ReplyTo Address</param>
         /// <returns></returns>
-        public IFluentEmail ReplyTo(string address)
+        public FluentEmail ReplyTo(string address)
         {
             Message.ReplyToList.Add(new MailAddress(address));
 
@@ -280,7 +256,7 @@ namespace libHammer
         /// <param name="address">The ReplyTo Address</param>
         /// <param name="name">The Display Name of the ReplyTo</param>
         /// <returns></returns>
-        public IFluentEmail ReplyTo(string address, string name)
+        public FluentEmail ReplyTo(string address, string name)
         {
             Message.ReplyToList.Add(new MailAddress(address, name));
 
@@ -292,7 +268,7 @@ namespace libHammer
         /// </summary>
         /// <param name="subject">email subject</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail Subject(string subject)
+        public FluentEmail Subject(string subject)
         {
             Message.Subject = subject;
             return this;
@@ -303,7 +279,7 @@ namespace libHammer
         /// </summary>
         /// <param name="body">The content of the body</param>
         /// <param name="isHtml">True if Body is HTML, false for plain text (Optional)</param>
-        public IFluentEmail Body(string body)
+        public FluentEmail Body(string body)
         {
             Message.Body = body;
             return this;
@@ -312,7 +288,7 @@ namespace libHammer
         /// <summary>
         /// Marks the email as High Priority
         /// </summary>
-        public IFluentEmail HighPriority()
+        public FluentEmail HighPriority()
         {
             Message.Priority = MailPriority.High;
             return this;
@@ -321,7 +297,7 @@ namespace libHammer
         /// <summary>
         /// Marks the email as Low Priority
         /// </summary>
-        public IFluentEmail LowPriority()
+        public FluentEmail LowPriority()
         {
             Message.Priority = MailPriority.Low;
             return this;
@@ -330,9 +306,9 @@ namespace libHammer
         /// <summary>
         /// Set the template rendering engine to use, defaults to RazorEngine
         /// </summary>
-        public IFluentEmail UsingTemplateEngine(ITemplateRenderer renderer)
+        public FluentEmail UsingTemplateEngine(IFluentTemplateRenderer renderer)
         {
-            _renderer = renderer;
+            this._templateRenderer = renderer;
             return this;
         }
 
@@ -344,14 +320,14 @@ namespace libHammer
         /// <param name="model">Model for the template</param>
         /// <param name="assembly">The assembly your resource is in. Defaults to calling assembly.</param>
         /// <returns></returns>
-        public IFluentEmail UsingTemplateFromEmbedded<T>(string path, T model, Assembly assembly = null)
+        public FluentEmail UsingTemplateFromEmbedded<T>(string path, T model, Assembly assembly = null)
         {
             CheckRenderer();
 
             assembly = assembly ?? Assembly.GetCallingAssembly();
 
             var template = EmbeddedResourceHelper.GetResourceAsString(assembly, path);
-            var result = _renderer.Parse(template, model, _bodyIsHtml);
+            var result = this._templateRenderer.Parse(template, model, _bodyIsHtml);
             Message.Body = result;
             Message.IsBodyHtml = _bodyIsHtml;
 
@@ -364,7 +340,7 @@ namespace libHammer
         /// <param name="filename">The path to the file to load</param>
         /// <param name="isHtml">True if Body is HTML, false for plain text (Optional)</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail UsingTemplateFromFile<T>(string filename, T model)
+        public FluentEmail UsingTemplateFromFile<T>(string filename, T model)
         {
             var path = GetFullFilePath(filename);
             var template = "";
@@ -382,7 +358,7 @@ namespace libHammer
 
             CheckRenderer();
 
-            var result = _renderer.Parse(template, model, _bodyIsHtml);
+            var result = this._templateRenderer.Parse(template, model, _bodyIsHtml);
             Message.Body = result;
             Message.IsBodyHtml = _bodyIsHtml;
 
@@ -397,7 +373,7 @@ namespace libHammer
         /// <param name="culture">The culture of the template (Default is the current culture)</param>
         /// <param name="isHtml">True if Body is HTML, false for plain text (Optional)</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail UsingCultureTemplateFromFile<T>(string filename, T model, CultureInfo culture = null)
+        public FluentEmail UsingCultureTemplateFromFile<T>(string filename, T model, CultureInfo culture = null)
         {
             var wantedCulture = culture ?? Thread.CurrentThread.CurrentUICulture;
             var cultureFile = GetCultureFileName(filename, wantedCulture);
@@ -410,11 +386,11 @@ namespace libHammer
         /// <param name="template">The razor template</param>
         /// <param name="isHtml">True if Body is HTML, false for plain text (Optional)</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail UsingTemplate<T>(string template, T model, bool isHtml = true)
+        public FluentEmail UsingTemplate<T>(string template, T model, bool isHtml = true)
         {
             CheckRenderer();
 
-            var result = _renderer.Parse(template, model, isHtml);
+            var result = this._templateRenderer.Parse(template, model, isHtml);
             Message.Body = result;
             Message.IsBodyHtml = isHtml;
 
@@ -426,7 +402,7 @@ namespace libHammer
         /// </summary>
         /// <param name="attachment">The Attachment to add</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail Attach(Attachment attachment)
+        public FluentEmail Attach(Attachment attachment)
         {
             if (!Message.Attachments.Contains(attachment))
                 Message.Attachments.Add(attachment);
@@ -439,7 +415,7 @@ namespace libHammer
         /// </summary>
         /// <param name="attachments">The List of Attachments to add</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail Attach(IList<Attachment> attachments)
+        public FluentEmail Attach(IList<Attachment> attachments)
         {
             foreach (var attachment in attachments.Where(attachment => !Message.Attachments.Contains(attachment)))
             {
@@ -454,31 +430,31 @@ namespace libHammer
         /// <param name="client">Smtp client to send from</param>
         /// <returns>Instance of the Email class</returns>
         /// [Obsolete("FluentEmail.Email.From.UsingClient(SmtpClient client) is obsolete: 'Please user the constructor'")]
-        public IFluentEmail UsingClient(SmtpClient client)
+        public FluentEmail UsingClient(SmtpClient client)
         {
-            _client = client;
+            this._smtpClient = client;
             return this;
         }
 
-        public IFluentEmail UseSSL()
+        public FluentEmail UseSSL()
         {
-            _useSsl = true;
+            this._usingSsl = true;
             return this;
         }
 
         /// <summary>
         /// Sets Message to html (set by default)
         /// </summary>
-        public IFluentEmail BodyAsHtml()
+        public FluentEmail BodyAsHtml()
         {
-            _bodyIsHtml = true;
+            this._bodyIsHtml = true;
             return this;
         }
 
         /// <summary>
         /// Sets Message to plain text (set by default)
         /// </summary>
-        public IFluentEmail BodyAsPlainText()
+        public FluentEmail BodyAsPlainText()
         {
             _bodyIsHtml = false;
             return this;
@@ -488,14 +464,14 @@ namespace libHammer
         /// Sends email synchronously
         /// </summary>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail Send()
+        public FluentEmail Send()
         {
-            if (_useSsl.HasValue)
-                _client.EnableSsl = _useSsl.Value;
+            
+                this._smtpClient.EnableSsl = this._usingSsl;
 
             Message.IsBodyHtml = _bodyIsHtml;
 
-            _client.Send(Message);
+            this._smtpClient.Send(Message);
             return this;
         }
 
@@ -506,15 +482,14 @@ namespace libHammer
         /// <param name="callback">Method to call on complete</param>
         /// <param name="token">User token to pass to callback</param>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail SendAsync(SendCompletedEventHandler callback, object token = null)
+        public FluentEmail SendAsync(SendCompletedEventHandler callback, object token = null)
         {
-            if (_useSsl.HasValue)
-                _client.EnableSsl = _useSsl.Value;
+                this._smtpClient.EnableSsl = this._usingSsl;
 
             Message.IsBodyHtml = _bodyIsHtml;
 
-            _client.SendCompleted += callback;
-            _client.SendAsync(Message, token);
+            this._smtpClient.SendCompleted += callback;
+            this._smtpClient.SendAsync(Message, token);
 
             return this;
         }
@@ -523,38 +498,26 @@ namespace libHammer
         /// Cancels async message sending
         /// </summary>
         /// <returns>Instance of the Email class</returns>
-        public IFluentEmail Cancel()
+        public FluentEmail Cancel()
         {
-            _client.SendAsyncCancel();
+            this._smtpClient.SendAsyncCancel();
             return this;
-        }
-
-        /// <summary>
-        /// Releases all resources
-        /// </summary>
-        public void Dispose()
-        {
-            if (_client != null)
-                _client.Dispose();
-
-            if (Message != null)
-                Message.Dispose();
         }
 
         private void CheckRenderer()
         {
-            if (_renderer != null) return;
+            if (this._templateRenderer != null) return;
 
-            if (DefaultRenderer != null)
-            {
-                _renderer = DefaultRenderer;
-            }
-            else
-            {
-                _renderer = new RazorRenderer();
-            }
+            
+                this._templateRenderer = new RazorRenderer();
+            
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         private static string GetFullFilePath(string filename)
         {
             if (filename.StartsWith("~"))
@@ -566,6 +529,12 @@ namespace libHammer
             return Path.GetFullPath(filename);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="culture"></param>
+        /// <returns></returns>
         private static string GetCultureFileName(string fileName, CultureInfo culture)
         {
             var fullFilePath = GetFullFilePath(fileName);

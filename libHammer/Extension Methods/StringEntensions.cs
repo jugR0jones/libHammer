@@ -418,7 +418,7 @@ namespace libHammer.Extension_Methods
         {
             try
             {
-                string result = null;
+                //string result = null;
 
                 if (string.IsNullOrEmpty(str))
                 {

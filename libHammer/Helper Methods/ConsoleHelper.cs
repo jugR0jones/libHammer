@@ -133,15 +133,9 @@ namespace libHammer.Helper_Methods
         /// <param name="args"></param>
         public static void Write(ConsoleColor color, string msg, params object[] args)
         {
-            try
-            {
                 Console.ForegroundColor = color;
                 Console.Write(msg, args);
-            }
-            finally
-            {
                 Console.ResetColor();
-            }
         }
 
         /// <summary>
@@ -152,15 +146,9 @@ namespace libHammer.Helper_Methods
         /// <param name="args"></param>
         public static void WriteLine(ConsoleColor color, string message, params object[] args)
         {
-            try
-            {
                 Console.ForegroundColor = color;
                 Console.WriteLine(message, args);
-            }
-            finally
-            {
                 Console.ResetColor();
-            }
         }
 
     }

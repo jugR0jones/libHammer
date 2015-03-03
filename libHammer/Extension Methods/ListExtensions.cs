@@ -6,7 +6,7 @@ namespace libHammer
     /// <summary>
     /// Extensions to the C# List
     /// </summary>
-    public static class ListExtensions<T>
+    public static class ListExtensions
     {
 
         /// <summary>

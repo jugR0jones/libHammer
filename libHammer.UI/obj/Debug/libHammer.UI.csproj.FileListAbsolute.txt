@@ -1,0 +1,7 @@
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer.UI\obj\Debug\libHammer.UI.Button.resources
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer.UI\obj\Debug\libHammer.UI.csproj.GenerateResource.Cache
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer.UI\bin\Debug\libHammer.UI.dll
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer.UI\bin\Debug\libHammer.UI.pdb
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer.UI\obj\Debug\libHammer.UI.dll
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer.UI\obj\Debug\libHammer.UI.pdb
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer.UI\obj\Debug\libHammer.UI.csprojResolveAssemblyReference.cache

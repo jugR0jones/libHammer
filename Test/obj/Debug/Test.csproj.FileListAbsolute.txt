@@ -1,1 +1,12 @@
 C:\Users\Graeme\Documents\GitHub\libHammer\Test\bin\Debug\Test.exe.config
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\obj\Debug\Test.csprojResolveAssemblyReference.cache
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\bin\Debug\Test.exe
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\bin\Debug\Test.pdb
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\bin\Debug\libHammer.dll
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\bin\Debug\RazorEngine.dll
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\bin\Debug\System.Web.Razor.dll
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\bin\Debug\libHammer.pdb
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\bin\Debug\RazorEngine.xml
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\bin\Debug\System.Web.Razor.xml
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\obj\Debug\Test.exe
+C:\Users\Graeme\Documents\GitHub\libHammer\Test\obj\Debug\Test.pdb

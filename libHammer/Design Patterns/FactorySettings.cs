@@ -1,7 +1,11 @@
-﻿using System;
+﻿using libHammer.Collections;
+using libHammer.Xml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace libHammer.Design_Patterns
@@ -10,7 +14,7 @@ namespace libHammer.Design_Patterns
     /// <summary>
     /// Holds key-value combinations of types to be built via <see cref="Factory<`>"/> pattern.
     /// </summary>
-    public class FactorySettings : Codoxide.Common.Configuration.ConfigurationSectionBase
+    public class FactorySettings : ConfigurationSectionBase
     {
         private readonly Dictionary<Type, MethodBase> _builderRegistry = new Dictionary<Type, MethodBase>();
         private readonly Regex _whitespaceRegEx = new Regex(@"\s", RegexOptions.Compiled);
@@ -51,9 +55,9 @@ namespace libHammer.Design_Patterns
                 Type concreteType = requestType;
 
                 if (Settings == null)
-                    throw new PatternException("Factory configuration is invalid. Settings field is set to null.");
+                    throw new DesignPatternException("Factory configuration is invalid. Settings field is set to null.");
                 else if (!buildDirectly && !Settings.ContainsKey(requestType.FullName))
-                    throw new PatternException("Factory does not know how to build type: " + requestType.FullName);
+                    throw new DesignPatternException("Factory does not know how to build type: " + requestType.FullName);
                 else if (!buildDirectly)
                     concreteType = GetConcreteType(requestType);
 
@@ -63,13 +67,13 @@ namespace libHammer.Design_Patterns
                                             : (matches[0] as BuilderAttribute).GetBuilderMethod(concreteType) as MethodBase;
                 if (builderMethod == null && 0 == matches.Length)
                 {
-                    throw new PatternException(string.Format("Factory cannot build type: {0}. "
+                    throw new DesignPatternException(string.Format("Factory cannot build type: {0}. "
                                                                 + "Type has no public parameterless constructor and "
                                                                 + " does not use the BuilderAttribute.", concreteType.FullName));
                 }
                 else if (builderMethod == null)
                 {
-                    throw new PatternException(string.Format("Factory cannot build type: {0}. "
+                    throw new DesignPatternException(string.Format("Factory cannot build type: {0}. "
                                                                 + "Method specified in BuilderAttribute is inaccessible.",
                                                                 concreteType.FullName));
                 }
@@ -86,7 +90,7 @@ namespace libHammer.Design_Patterns
             }
             catch (Exception ex)
             {
-                throw new PatternException("Factory cannot load the specified concrete type: " + typeName, ex);
+                throw new DesignPatternException("Factory cannot load the specified concrete type: " + typeName, ex);
             }
         }
 

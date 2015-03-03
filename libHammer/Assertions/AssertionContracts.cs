@@ -19,6 +19,15 @@ namespace libHammer.Assertions
         /// <typeparam name="U"></typeparam>
         private static class Exceptions<U> where U : Exception, new()
         {
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="obj"></param>
+            /// <param name="function"></param>
+            /// <param name="args"></param>
+            /// <returns></returns>
             public static T ThrowOnTrue<T>(T obj, Func<T, bool> function, params object[] args)
             {
                 if (function(obj) == true)
@@ -27,6 +36,15 @@ namespace libHammer.Assertions
                 }
                 return obj;
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="obj"></param>
+            /// <param name="function"></param>
+            /// <param name="args"></param>
+            /// <returns></returns>
             public static T ThrowOnFalse<T>(T obj, Func<T, bool> function, params object[] args)
             {
                 if (function(obj) == false)
@@ -35,6 +53,13 @@ namespace libHammer.Assertions
                 }
                 return obj;
             }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="obj"></param>
+            /// <param name="args"></param>
             public static void Throw<T>(T obj, params object[] args)
             {
                 throw CreateException(obj, args);

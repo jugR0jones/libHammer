@@ -1,12 +1,21 @@
-﻿using System;
+﻿using libHammer.Design_Patterns;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace libHammer.Xml
 {
 
+    /// <summary>
+    /// 
+    /// </summary>
     public class ExternalConfigurationBase : IXmlSerializable, ISupportLazyInitialization
     {
         private Dictionary<Type, XmlSerializer> _serializers;

@@ -1,5 +1,9 @@
-C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\obj\Debug\libHammer.csprojResolveAssemblyReference.cache
 C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\bin\Debug\libHammer.dll
 C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\bin\Debug\libHammer.pdb
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\bin\Debug\RazorEngine.dll
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\bin\Debug\System.Web.Razor.dll
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\bin\Debug\RazorEngine.xml
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\bin\Debug\System.Web.Razor.xml
 C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\obj\Debug\libHammer.dll
 C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\obj\Debug\libHammer.pdb
+C:\Users\Graeme\Documents\GitHub\libHammer\libHammer\obj\Debug\libHammer.csprojResolveAssemblyReference.cache

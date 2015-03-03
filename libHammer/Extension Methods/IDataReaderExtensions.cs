@@ -87,12 +87,12 @@ namespace libHammer.Extension_Methods
                     }
 
                     if (!dataReader.IsDBNull(dataReader.FieldCount - 1))
-                        sb.Append(dataReader.GetValue(dataReader.FieldCount - 1).ToString().Replace(separator, " "));
+                        stringBuilder.Append(dataReader.GetValue(dataReader.FieldCount - 1).ToString().Replace(separator, " "));
 
-                    csvRows.Add(sb.ToString());
+                    csvRows.Add(stringBuilder.ToString());
                 }
                 dataReader.Close();
-                sb = null;
+                stringBuilder = null;
                 return csvRows;
             }
             catch (Exception exception)

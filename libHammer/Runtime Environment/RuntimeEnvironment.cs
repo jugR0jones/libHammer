@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,9 @@ namespace libHammer.Runtime_Environment
         /// </summary>
         public static readonly string CompanyName;
 
+        /// <summary>
+        /// 
+        /// </summary>
         static RuntimeEnviornment()
         {
             Assembly assembly = Assembly.GetEntryAssembly()
